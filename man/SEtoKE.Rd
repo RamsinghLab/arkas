@@ -9,7 +9,7 @@ OR a matrix of counts and a GRanges of annotations for each count,
 to a KallistoExperiment (thereby providing tpm estimates on demand).}
 \usage{
 SEtoKE(SE = NULL, counts = NULL, features = NULL, covariates = NULL,
-  transcriptomes = NULL, fraglen = 200, ...)
+  transcriptomes = NULL, fraglen = 200)
 
 SummarizedExperimentToKallistoExperiment(SE, transcriptomes)
 
@@ -27,18 +27,6 @@ CountsAndFeaturesToKallistoExperiment(counts, features, transcriptomes, ...)
 \item{transcriptomes}{mandatory string or strings naming the transcriptomes}
 
 \item{fraglen}{optional mean fragment length estimate for PE runs}
-
-\item{...}{Other stuff (arguments passed to KallistoExperiment)}
-
-\item{SE}{SummarizedExperiment w/fully annotated rows (features)}
-
-\item{transcriptomes}{mandatory string or strings naming the transcriptomes}
-
-\item{counts}{matrix of transcript or bundle counts}
-
-\item{features}{GRanges of features with valid lengths}
-
-\item{transcriptomes}{mandatory string or strings naming the transcriptomes}
 
 \item{...}{Other stuff (such as covariates=covs and the like)}
 }

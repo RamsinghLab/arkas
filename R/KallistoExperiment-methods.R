@@ -1,33 +1,36 @@
-#' @describeIn KallistoExperiment 
-#'
-#' Retrieve the estimated count matrix from a KallistoExperiment. 
-#' @export
+#' @rdname tpm-methods
+#' @param object a feature defined object
+#' @aliases counts,tpm
 setMethod("counts", "KallistoExperiment",
           function (object) return(assays(object)$est_counts))
 
-## new generics for artemis 
+#' covariates generic
+#' @name covariates
+#' @rdname covariates-methods
+#' @exportMethod covariates
 setGeneric("covariates", function(object) standardGeneric("covariates"))
+
+
+#' covariates setter/replacement generic
+#' @name covariates<-
+#' @rdname covariates-methods
+#' @exportMethod covariates<-
 setGeneric("covariates<-", 
            function(object, value) standardGeneric("covariates<-"))
-#' @describeIn KallistoExperiment 
-#'
-#' Retrieve the sample covariates from a KallistoExperiment. 
-#'
-#' @export
+
+#' @rdname covariates-methods
+#' @aliases covariates
 setMethod("covariates", "KallistoExperiment",
           function (object) return(colData(object)))
-#' @describeIn KallistoExperiment 
-#'
-#' Retrieve the sample covariates from a KallistoExperiment. 
-#'
-#' @export
+
+#' @rdname covariates-methods
 setMethod("pData", "KallistoExperiment",
           function (object) return(colData(object)))
 
-#' @describeIn KallistoExperiment 
-#'
-#' Assign the sample covariates for a KallistoExperiment. 
-#' @export
+#' @rdname covariates-methods
+#' @param object a feature defined object
+#' @param value a value to replace features
+#' @aliases covariates
 setReplaceMethod("covariates", "KallistoExperiment",
                  function (object, value) {
                    object <- BiocGenerics:::replaceSlots(object, colData=value)
@@ -37,65 +40,66 @@ setReplaceMethod("covariates", "KallistoExperiment",
                  })
 
 
-#' @describeIn KallistoExperiment 
-#'
-#' Convenience method for people used to ExpressionSet, to set per-sample data.
-#'
-#' @export
+#' @rdname covariates-methods
 setReplaceMethod("pData", c("KallistoExperiment", "DataFrame"),
                  function (object, value) {
-                   object <- BiocGenerics:::replaceSlots(object, colData=value)
+                   object <-BiocGenerics:::replaceSlots(object, colData=value)
                    msg <- SummarizedExperiment:::.valid.SummarizedExperiment0.assays_ncol(object)
                    if (!is.null(msg)) stop(msg)
                    else return(object)
                  })
 
-## set in GenomicFeatures, which we have to import anyways 
-## setGeneric("features", function(object) standardGeneric("features"))
-setGeneric("features<-", function(object, value) standardGeneric("features<-"))
-#' @describeIn KallistoExperiment 
-#'
-#' Retrieve the per-row annotations for a KallistoExperiment. 
-#'
-#' @export
-setMethod("features", "KallistoExperiment", function (x) rowRanges(x))
 
-#' @describeIn KallistoExperiment 
-#'
-#' Assign per-row annotations to a KallistoExperiment.
-#' @export
+#' features generic
+#' @name features
+#' @rdname features-methods
+#' @exportMethod features
+setGeneric("features", function(object) standardGeneric("features"))
+
+
+#' method for features<-
+#' @name features<-
+#' @rdname features-methods
+#' @exportMethod features<-
+setGeneric("features<-", function(object, value) standardGeneric("features<-"))
+
+#' @rdname features-methods
+#' @aliases features
+setMethod("features", "KallistoExperiment", function (object) rowRanges(object))
+
+#' @rdname features-methods
+#' @param object feature defined object
+#' @param value a value defined object
+#' @aliases features
 setReplaceMethod("features", c("KallistoExperiment", "ANY"),
                 function(object, value) {
                   object <- BiocGenerics:::replaceSlots(object,
-                                                        rowRanges=value)
+                            rowRanges=value)
                   msg <- SummarizedExperiment:::.valid.SummarizedExperiment0.assays_nrow(object)
                   if (!is.null(msg)) stop(msg)
                   else return(object)
 })
 
-# eff_length generic 
+#' eff length generic
+#' @name eff_length
+#' @rdname eff_length-methods
+#' @exportMethod eff_length
 setGeneric("eff_length", function(object) standardGeneric("eff_length"))
 
-#' @describeIn KallistoExperiment 
-#'
-#' Retrieve the matrix of effective transcript lengths from a KallistoExperiment
-#' @export
+#' @rdname eff_length-methods
+#' @param object a feature defined object
+#' @aliases eff_length
 setMethod("eff_length", "KallistoExperiment",
           function (object) return(assays(object)$eff_length))
 
-# tpm generic 
+#' tpm generic
+#' @name tpm
+#' @rdname tpm-methods
+#' @exportMethod tpm
 setGeneric("tpm", function(object) standardGeneric("tpm"))
 
-#' @describeIn KallistoExperiment
-#'
-#' Obtain tpm from the precomputed matrix ( computed as shown in 
-#' https://haroldpimentel.wordpress.com/2014/05/08/what-the-fpkm-a-review-rna-seq-expression-units/ ), specifically,
-#' 
-#' \code{ rate <- log(counts(object)) - log(eff_length(object)); }
-#' 
-#' \code{ tpm <- exp(rate - log(sum(exp(rate))) + log(1e6)) } 
-#' 
-#' @export
+#' @rdname tpm-methods
+#' @aliases tpm,counts
 setMethod("tpm", "KallistoExperiment",
           function (object) {
 
@@ -109,35 +113,32 @@ setMethod("tpm", "KallistoExperiment",
 
                })   
        
-# kallistoVersion generic 
+#' kallisto version accessor
+#' @name kallistoVersion
+#' @rdname kallistoVersion-methods
+#' @exportMethod kallistoVersion
 setGeneric("kallistoVersion", 
            function(object) standardGeneric("kallistoVersion"))
 
-#' @describeIn KallistoExperiment 
-#'
-#' Retrieve the version of Kallisto used for alignment from a KallistoExperiment
-#'
-#' @export
+#' @rdname kallistoVersion-methods
+#' @param object a kallisto experiment
+#' @aliases kallistoVersion
 setMethod("kallistoVersion", "KallistoExperiment",
           function (object) return(object@kallistoVersion))
 
-# transcriptomes generic 
+#' transcriptome accessor 
+#' @name transcriptomes
+#' @rdname transcriptomes-methods
+#' @exportMethod transcriptomes
 setGeneric("transcriptomes", 
            function(object) standardGeneric("transcriptomes"))
 
-#' @describeIn KallistoExperiment 
-#'
-#' Retrieve the transcriptomes used for annotation from a KallistoExperiment
-#'
-#' @export
+#' @rdname transcriptomes-methods
+#' @param object feature defined object
+#' @aliases transcriptomes
 setMethod("transcriptomes", "KallistoExperiment",
           function (object) return(object@transcriptomes))
 
-#' @describeIn KallistoExperiment 
-#'
-#' Fetch transcripts for a gene, or all transcripts bundled by gene.
-#'
-#' @export
 setMethod("transcriptsBy", "KallistoExperiment",
           function(x, by="gene", ...) {
             if (by == "gene") { 
@@ -147,20 +148,13 @@ setMethod("transcriptsBy", "KallistoExperiment",
             }
           })
 
-#' @describeIn KallistoExperiment 
-#'
-#' Fetch the matrix of MADs for estimated counts, if bootstraps were run. 
-#' 
-#' @export
 setMethod("mad", "KallistoExperiment", function(x) assays(x)$est_counts_mad)
 
 # FIXME: add method to retrieve normalization factors if ERCC spike-ins used 
 
-#' @describeIn KallistoExperiment
-#'
 #' Convert a KallistoExperiment to a SummarizedExperiment without losing data
-#' 
-#' @export
+#' @name as
+#'
 setAs("KallistoExperiment", "SummarizedExperiment", 
       function(from) {
         metadata(from)$transcriptomes <- transcriptomes(from)
@@ -169,11 +163,9 @@ setAs("KallistoExperiment", "SummarizedExperiment",
                              colData=colData(from), metadata=metadata(from))
       })
 
-#' @describeIn KallistoExperiment
-#'
 #' Convert suitably annotated SummarizedExperiment back to a KallistoExperiment
+#' @name as
 #' 
-#' @export
 setAs("SummarizedExperiment", "KallistoExperiment", 
       function(from) {
         txomes <- metadata(from)$transcriptomes
@@ -181,4 +173,3 @@ setAs("SummarizedExperiment", "KallistoExperiment",
         new("KallistoExperiment", from, 
             kallistoVersion=kversion, transcriptomes=txomes)
       })
-
