@@ -1,9 +1,10 @@
 Package: arkas
 Type: Package
 Title: A package that complements Kallisto for quick, informative *seq analysis
-Version: 0.44.9
-Date: 2016-08-13
+Version: 0.98.0
+Date: 2016-08-26
 Author: Tim Triche, Jr., Anthony Colombo, Harold Pimentel
+biocViews: RNASeq, Transcriptomics
 Depends:
     SummarizedExperiment,
     tools
@@ -28,7 +29,13 @@ Imports:
     GenomeInfoDb,
     methods,
     S4Vectors,
-    GenomicFeatures
+    GenomicFeatures,
+    grDevices, 
+    graphics, 
+    grid, 
+    parallel, 
+    stats,
+    utils
 Suggests:
     knitr,
     roxygen2,

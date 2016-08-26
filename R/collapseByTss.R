@@ -7,6 +7,8 @@
 #' @return  the TSS for transcripts on chr1:22/X/Y/M to collapse by TSS,
 #'          or NA for transcripts originating anywhere else (ERCC, repeats, &c)
 #'
+#' @importFrom S4Vectors queryHits 
+#' @importFrom S4Vectors subjectHits 
 #' @importFrom GenomeInfoDb seqlevels
 #' @importFrom GenomeInfoDb seqlevelsStyle
 #' @importFrom GenomeInfoDb seqlevelsInGroup seqnames
